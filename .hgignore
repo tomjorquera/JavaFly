@@ -1,0 +1,18 @@
+syntax: glob
+
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+
+# Eclipse Files #
+.metadata/
+bin/
+gen/
+javadoc/

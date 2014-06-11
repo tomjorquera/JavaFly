@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
  * @param <Criticality>
  *            the criticality representation
  */
-public interface Firefly<Env, Action extends Function<Env, Env>, Criticality extends Comparable<Criticality>> {
+public interface Firefly<Env, Action extends Function<Env, Env>, Criticality extends Comparable<Criticality>, Agent extends Firefly<Env, Action, Criticality, Agent>> {
 
 	/**
 	 * This method takes in argument the current environment and a set of
@@ -60,8 +60,7 @@ public interface Firefly<Env, Action extends Function<Env, Env>, Criticality ext
 	 *            the actions to be applied
 	 * @return the predicted list of neighbors
 	 */
-	public List<? extends Firefly<Env, Action, Criticality>> predictedNeighbors(
-			Env env, Set<Action> actions);
+	public List<Agent> predictedNeighbors(Env env, Set<Action> actions);
 
 	/**
 	 * This function takes in argument the current environment, and returns a
@@ -87,6 +86,18 @@ public interface Firefly<Env, Action extends Function<Env, Env>, Criticality ext
 	public Set<Action> contradictoryActions(Env env, Set<Action> actions);
 
 	/**
+	 * TODO: DOCUMENT
+	 * 
+	 * @param env
+	 * @param actions
+	 * @param action
+	 * @return
+	 */
+	default boolean isCompatible(Env env, Set<Action> actions, Action action) {
+		return !contradictoryActions(env, actions).contains(action);
+	}
+
+	/**
 	 * This function takes in argument the current environment, a set of actions
 	 * and an agent, and returns the predicted criticality for this agent if the
 	 * actions are applied to the environment.
@@ -100,7 +111,7 @@ public interface Firefly<Env, Action extends Function<Env, Env>, Criticality ext
 	 * @return the predicted criticality of the examinated agent
 	 */
 	public Criticality predictedCriticality(Env env, Set<Action> actions,
-			Firefly<Env, Action, Criticality> agent);
+			Firefly<Env, Action, Criticality, Agent> agent);
 
 	/**
 	 * This function takes in argument the current environment, and return a set
@@ -119,6 +130,10 @@ public interface Firefly<Env, Action extends Function<Env, Env>, Criticality ext
 	default Set<Action> decision(Env env) {
 		Set<Action> candidateActions = possibleActions(env);
 		Set<Action> selectedActions = new HashSet<>();
+
+//		List<Action> tmp = new ArrayList<>(candidateActions);
+//		tmp.sort(actionComparator(env, selectedActions));
+//		System.out.println(tmp);
 
 		boolean stop = false;
 
@@ -144,8 +159,9 @@ public interface Firefly<Env, Action extends Function<Env, Env>, Criticality ext
 			} else {
 				selectedActions.add(bestAction);
 				candidateActions.remove(bestAction);
-				candidateActions.removeAll(contradictoryActions(env,
-						selectedActions));
+				candidateActions = candidateActions.stream()
+						.filter(a -> isCompatible(env, selectedActions, a))
+						.collect(Collectors.toSet());
 			}
 		}
 
@@ -279,20 +295,20 @@ public interface Firefly<Env, Action extends Function<Env, Env>, Criticality ext
 
 					Criticality c2 = l2.next();
 
-					if (!c1.equals(c2)) {
+					if (!(c1.compareTo(c2) == 0)) {
 						return c1.compareTo(c2);
 					} else {
 						// continue
 					}
 
 				} else {
-					return 1; // TODO: correct ?
+					return 0; // TODO: correct ?
 				}
 
 			}
 
 			if (l2.hasNext()) {
-				return -1; // TODO: correct ?
+				return 0; // TODO: correct ?
 			} else {
 				return 0;
 			}

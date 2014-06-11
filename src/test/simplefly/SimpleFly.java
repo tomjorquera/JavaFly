@@ -14,7 +14,7 @@ import core.Firefly;
  * @author jorquera
  *
  */
-public final class SimpleFly implements Firefly<Environment, Action, Double> {
+public final class SimpleFly implements Firefly<Environment, Action, Double, SimpleFly> {
 
 	/**
 	 * the unique id of the agent
@@ -125,7 +125,7 @@ public final class SimpleFly implements Firefly<Environment, Action, Double> {
 
 	@Override
 	public Double predictedCriticality(Environment env, Set<Action> actions,
-			Firefly<Environment, Action, Double> agent) {
+			Firefly<Environment, Action, Double, SimpleFly> agent) {
 		// here we simulate a very simple prediction by directly calling the
 		// criticality function of the agent on the anticipated environment
 

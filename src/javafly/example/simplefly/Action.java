@@ -1,4 +1,4 @@
-package test.simplefly;
+package javafly.example.simplefly;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 /**
  * 
- * The common interface for the possible actions of the agents. Only used of
+ * The common interface for the possible actions of the agents. Only used for
  * type consistency
  * 
  * @author jorquera

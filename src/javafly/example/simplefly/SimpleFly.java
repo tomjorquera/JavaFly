@@ -1,4 +1,4 @@
-package test.simplefly;
+package javafly.example.simplefly;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import core.Firefly;
+import javafly.Firefly;
 
 /**
  * Our simple agent implementation
@@ -14,7 +14,8 @@ import core.Firefly;
  * @author jorquera
  *
  */
-public final class SimpleFly implements Firefly<Environment, Action, Double, SimpleFly> {
+public final class SimpleFly implements
+		Firefly<Environment, Action, Double, SimpleFly> {
 
 	/**
 	 * the unique id of the agent

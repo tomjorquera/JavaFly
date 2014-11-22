@@ -1,4 +1,4 @@
-package core;
+package javafly;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -9,21 +9,27 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
+ * <p>
  * The interface corresponding to a cooperative agent.
+ * </p>
  * 
+ * <p>
  * This agent representation is purely functional. All the mutable state is
  * delegated to the environment. Consequently, these agents can be seen as pure
  * decision functions which select the next actions to be applied in order to
  * mutate the environment.
- * <p/>
+ * </p>
+ * 
+ * <p>
  * It provides default implementations for several functions, notably the
  * decision function, which contains the decision algorithm where the actions to
  * execute are selected in a way which minimizes the criticality of its
  * neighborhood, based on a lexicographical comparison of the anticipated
  * criticalities of the neighbors.
- * <p/>
- * This default decision function require the implementation of several
- * domain-dependent (functional) methods which are defined in the interface:
+ * </p>
+ * 
+ * <p>This default decision function require the implementation of several
+ * domain-dependent (functional) methods which are defined in the interface:</p>
  * <ul>
  * <li>predictedNeighbors, which predict the neighborhood of an agent</li>
  * <li>possibleActions, which gives the current possible actions of the agent</li>
@@ -31,8 +37,9 @@ import java.util.stream.Collectors;
  * others</li>
  * <li>predictedCriticality, which predict the criticality of an agent</li>
  * </ul>
- * <p/>
- * Some other default functions are provided:
+ * 
+ * 
+ * <p>Some other default functions are provided:</p>
  * <ul>
  * <li>act: which apply a set of actions sequentially to the environment</li>
  * <li>criticality: which return the current criticality using the
@@ -86,12 +93,18 @@ public interface Firefly<Env, Action extends Function<Env, Env>, Criticality ext
 	public Set<Action> contradictoryActions(Env env, Set<Action> actions);
 
 	/**
-	 * TODO: DOCUMENT
+	 * A helper method which uses the implementation of the
+	 * {@link #contradictoryActions(Env, Set) contradictoryActions} method but
+	 * check if a given action is compatible with the already selected ones.
 	 * 
 	 * @param env
+	 *            the current environment
 	 * @param actions
+	 *            the already selected actions
 	 * @param action
-	 * @return
+	 *            a candidate action
+	 * @return true if the candidate action is compatible with the previously
+	 *         selected ones, false otherwise.
 	 */
 	default boolean isCompatible(Env env, Set<Action> actions, Action action) {
 		return !contradictoryActions(env, actions).contains(action);
@@ -131,9 +144,9 @@ public interface Firefly<Env, Action extends Function<Env, Env>, Criticality ext
 		Set<Action> candidateActions = possibleActions(env);
 		Set<Action> selectedActions = new HashSet<>();
 
-//		List<Action> tmp = new ArrayList<>(candidateActions);
-//		tmp.sort(actionComparator(env, selectedActions));
-//		System.out.println(tmp);
+		// List<Action> tmp = new ArrayList<>(candidateActions);
+		// tmp.sort(actionComparator(env, selectedActions));
+		// System.out.println(tmp);
 
 		boolean stop = false;
 

@@ -1,4 +1,4 @@
-package test.simplefly;
+package javafly.example.simplefly;
 
 import java.util.Map;
 

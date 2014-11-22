@@ -1,4 +1,4 @@
-package test.simplefly;
+package javafly.example.simplefly;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -71,7 +71,7 @@ public final class Main {
 	}
 
 	/**
-	 * Print the environment stat
+	 * Print the environment stats
 	 * 
 	 * @param env
 	 *            the environment to display
